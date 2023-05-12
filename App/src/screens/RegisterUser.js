@@ -5,20 +5,36 @@ import React, { useState } from 'react';
 import Logo from '../assets/images/logo.png';
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
+import api from "../api";
+
 const RegisterUser = ({ navigation }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [admin, setAdmin] = useState('');
     const { height } = useWindowDimensions();
-    const onRegisterPressed = () => {
-        alert("Registered User " + name + " and " + password + " and " +
-            email + " and " + admin);
-            setName('')
-            setEmail('')
-            setPassword('')
-            setAdmin('')
+
+    const onRegisterPressed = async () => {
+      
+        try {
+            const data = await api.post('/user/register', {
+                name: name,
+                email: email,
+                password: password,
+                admin: admin
+            });
+            if(data.status === 200){
+                console.log(data)
+            } else{
+                console.log(data)
+            }
+
+        } catch (error) {
+           console.log(error); 
+        }
+           
     }
+
     return (
         <View style={styles.view}>
             <Image
@@ -59,6 +75,7 @@ const RegisterUser = ({ navigation }) => {
         </View>
     )
 };
+
 const styles = StyleSheet.create({
     view: {
         alignItems: 'center',
@@ -74,4 +91,5 @@ const styles = StyleSheet.create({
         color: "#6200ee",
     },
 });
+
 export default RegisterUser;
